@@ -21,7 +21,7 @@ public class RoupaService extends AbstractService<Roupa, Long> {
         return roupaRepository;
     }
 
-    public Page<Roupa> findAllByRoupaId(Pageable pageable) {
+    public Page<Roupa> findAllByRoupaIdNome(Pageable pageable, String nome) {
         return this.roupaRepository.findAll(pageable);
     }
 }

@@ -29,8 +29,9 @@ public class RoupaController {
 
     @GetMapping
     public ResponseEntity<Page<RoupaDTO>> findAll(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int size) {
-        Page<Roupa> roupas = roupaService.findAllByRoupaId(PageRequest.of(page, size));
+                                                  @RequestParam(defaultValue = "10") int size,
+                                                  @RequestParam(defaultValue = "") String nome) {
+        Page<Roupa> roupas = roupaService.findAllByRoupaIdNome(PageRequest.of(page, size), nome);
         Page<RoupaDTO> roupasDTO = RoupaDTO.fromEntity(roupas);
         roupasDTO.forEach(dto -> {
             List<Regra> regras = regraService.findAllByRoupaId(dto.getId());
