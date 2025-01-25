@@ -8,21 +8,18 @@ import jakarta.persistence.*;
 @SequenceGenerator(name = AbstractEntity.SEQUENCE_GENERATOR, sequenceName = "seq_regras", allocationSize = 1)
 public class Regra extends AbstractEntity {
 
-    @Column(name = "tamanho", nullable = false)
-    private String tamanho;
-
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
+    @ManyToOne
+    @JoinColumn(name = "id_pedra", nullable = false, referencedColumnName = "id")
+    private Pedra pedra;
+
+    @ManyToOne
+    @JoinColumn(name = "id_roupa", nullable = false, referencedColumnName = "id")
+    private Roupa roupa;
+
     public Regra() {
-    }
-
-    public String getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(String tamanho) {
-        this.tamanho = tamanho;
     }
 
     public Integer getQuantidade() {
@@ -49,11 +46,5 @@ public class Regra extends AbstractEntity {
         this.roupa = roupa;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "id_pedra", nullable = false, referencedColumnName = "id")
-    private Pedra pedra;
 
-    @ManyToOne
-    @JoinColumn(name = "id_roupa", nullable = false, referencedColumnName = "id")
-    private Roupa roupa;
 }

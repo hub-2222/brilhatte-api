@@ -14,19 +14,31 @@ public class RoupaDTO {
     private BigDecimal comprimentoCostas;
     private BigDecimal larguraFrente;
     private BigDecimal larguraCostas;
+    private String imageUrl;
+    private String thumbnailUrl;
     private List<PedraVinculadaDTO> pedrasVinculadas;
 
     public RoupaDTO() {
     }
 
-    public RoupaDTO(Long id, String nome, BigDecimal comprimentoFrente, BigDecimal comprimentoCostas, BigDecimal larguraFrente, BigDecimal larguraCostas, List<PedraVinculadaDTO> pedrasVinculadas) {
+    public RoupaDTO(Long id, String nome, BigDecimal comprimentoFrente, BigDecimal comprimentoCostas, BigDecimal larguraFrente, BigDecimal larguraCostas, String imageUrl, String thumbnailUrl, List<PedraVinculadaDTO> pedrasVinculadas) {
         this.id = id;
         this.nome = nome;
         this.comprimentoFrente = comprimentoFrente;
         this.comprimentoCostas = comprimentoCostas;
         this.larguraFrente = larguraFrente;
         this.larguraCostas = larguraCostas;
+        this.imageUrl = imageUrl;
+        this.thumbnailUrl = thumbnailUrl;
         this.pedrasVinculadas = pedrasVinculadas;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public Long getId() {
@@ -77,6 +89,14 @@ public class RoupaDTO {
         this.larguraCostas = larguraCostas;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public List<PedraVinculadaDTO> getPedrasVinculadas() {
         return pedrasVinculadas;
     }
@@ -93,6 +113,8 @@ public class RoupaDTO {
         roupaDTO.setComprimentoCostas(roupa.getComprimentoCostas());
         roupaDTO.setLarguraFrente(roupa.getLarguraFrente());
         roupaDTO.setLarguraCostas(roupa.getLarguraCostas());
+        roupaDTO.setImageUrl(roupa.getImageUrl());
+        roupaDTO.setThumbnailUrl(roupa.getThumbnailUrl());
         return roupaDTO;
     }
 
@@ -104,6 +126,8 @@ public class RoupaDTO {
         roupa.setComprimentoCostas(roupaDTO.getComprimentoCostas());
         roupa.setLarguraFrente(roupaDTO.getLarguraFrente());
         roupa.setLarguraCostas(roupaDTO.getLarguraCostas());
+        roupa.setImageUrl(roupaDTO.getImageUrl());
+        roupa.setThumbnailUrl(roupaDTO.getThumbnailUrl());
         return roupa;
     }
 

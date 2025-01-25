@@ -1,10 +1,9 @@
 package com.brilhatte.app.models;
 
 import com.brilhatte.app.common.AbstractEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
+
 
 import java.math.BigDecimal;
 
@@ -28,7 +27,29 @@ public class Roupa extends AbstractEntity{
     @Column(name = "largura_costas", nullable = false)
     private BigDecimal larguraCostas;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+
     public Roupa() {
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getNome() {

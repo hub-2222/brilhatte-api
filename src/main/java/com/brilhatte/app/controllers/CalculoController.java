@@ -1,20 +1,19 @@
 package com.brilhatte.app.controllers;
 
-import com.brilhatte.app.dtos.CalculoDTO;
-import com.brilhatte.app.dtos.HotfixDTO;
+import com.brilhatte.app.dtos.calculo.CalculoDTO;
+import com.brilhatte.app.dtos.calculo.HotfixDTO;
 import com.brilhatte.app.models.Regra;
+import com.brilhatte.app.models.calculo.Calculo;
+import com.brilhatte.app.repositories.calculo.CalculoRepository;
 import com.brilhatte.app.services.RegraService;
+import com.brilhatte.app.services.calculo.CalculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("/calculo")
@@ -24,7 +23,15 @@ public class CalculoController {
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
 
     @Autowired
+    private CalculoRepository calculoRepository;
+
+    @Autowired
     private RegraService regraService;
+
+    @GetMapping("/{idRoupa}")
+    public ResponseEntity<Calculo> findByRoupaId(@PathVariable Long idRoupa) {
+        return ResponseEntity.ok(calculoRepository.findByRoupaId(idRoupa));
+    }
 
     @PostMapping
     public ResponseEntity<BigDecimal> calcularPrecoCusto(@RequestBody CalculoDTO calculoDTO) {
@@ -37,6 +44,8 @@ public class CalculoController {
         BigDecimal porcentagemLucro = calculoDTO.getPorcentagemLucro().divide(ONE_HUNDRED, 2, RoundingMode.HALF_UP).add(BigDecimal.ONE);
 
         BigDecimal precoCusto = (valorTotalHotfix.add(calculoDTO.getMaoObra()).add(valorTotalPedras)).multiply(porcentagemLucro);
+
+        calculoRepository.save(CalculoDTO.toEntity(calculoDTO));
         return ResponseEntity.ok(precoCusto);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class RoupaController {
     public ResponseEntity<Page<RoupaDTO>> findAll(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "") String nome) {
-        Page<Roupa> roupas = roupaService.findAllByRoupaIdNome(PageRequest.of(page, size), nome);
+        Page<Roupa> roupas = roupaService.findAllByNomeWithImage(PageRequest.of(page, size), nome);
         Page<RoupaDTO> roupasDTO = RoupaDTO.fromEntity(roupas);
         roupasDTO.forEach(dto -> {
             List<Regra> regras = regraService.findAllByRoupaId(dto.getId());
@@ -41,6 +42,21 @@ public class RoupaController {
     @PostMapping
     public ResponseEntity<RoupaDTO> save(@RequestBody RoupaDTO roupaDTO) {
         Roupa roupa = roupaService.save(RoupaDTO.toEntity(roupaDTO));
+        regraService.create(roupa, roupaDTO.getPedrasVinculadas());
         return ResponseEntity.ok(RoupaDTO.fromEntity(roupa));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RoupaDTO> update(@PathVariable Long id, @RequestBody RoupaDTO roupaDTO) {
+        Roupa roupa = roupaService.update(id, RoupaDTO.toEntity(roupaDTO));
+        regraService.update(roupa, roupaDTO.getPedrasVinculadas());
+        return ResponseEntity.ok(RoupaDTO.fromEntity(roupa));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        regraService.deleteByRoupaId(id);
+        roupaService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
