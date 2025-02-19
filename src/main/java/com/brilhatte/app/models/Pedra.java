@@ -25,7 +25,8 @@ public class Pedra extends AbstractEntity {
     public Pedra() {
     }
 
-    public Pedra(String nome, String tamanho, BigDecimal valorUnitario) {
+    public Pedra(Long id, String nome, String tamanho, BigDecimal valorUnitario) {
+        super(id);
         this.nome = nome;
         this.tamanho = tamanho;
         this.valorUnitario = valorUnitario;

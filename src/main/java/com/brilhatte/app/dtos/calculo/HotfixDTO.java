@@ -5,6 +5,7 @@ import com.brilhatte.app.models.calculo.Calculo;
 import com.brilhatte.app.models.calculo.Hotfix;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class HotfixDTO {
 
@@ -60,6 +61,14 @@ public class HotfixDTO {
     }
 
     public static Hotfix toEntity(HotfixDTO hotfixDTO, Calculo calculo) {
-        return new Hotfix(hotfixDTO.getTamanho(), hotfixDTO.getLarguraUtilizada(), hotfixDTO.getComprimentoUtilizado(), calculo);
+        return new Hotfix(hotfixDTO.getId(), hotfixDTO.getTamanho(), hotfixDTO.getLarguraUtilizada(), hotfixDTO.getComprimentoUtilizado(), calculo);
+    }
+
+    public static List<Hotfix> toEntity(List<HotfixDTO> hotfixes, Calculo calculo){
+        return hotfixes.stream().map(hotfix -> HotfixDTO.toEntity(hotfix, calculo)).toList();
+    }
+
+    public static List<HotfixDTO> fromEntity(List<Hotfix> hotfixes){
+        return hotfixes.stream().map(HotfixDTO::fromEntity).toList();
     }
 }

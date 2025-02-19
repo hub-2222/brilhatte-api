@@ -27,10 +27,6 @@ public class Calculo extends AbstractEntity{
     @Column(name = "preco_custo", nullable = false)
     private BigDecimal precoCusto = new BigDecimal(0);
 
-    @OneToMany(mappedBy = "id_calculo")
-    @OrderBy("id ASC")
-    private List<Hotfix> hotfixes;
-
     public Calculo(Roupa roupa, BigDecimal maoObra, BigDecimal porcentagemLucro, BigDecimal precoCusto) {
         this.roupa = roupa;
         this.maoObra = maoObra;
@@ -71,21 +67,5 @@ public class Calculo extends AbstractEntity{
 
     public void setPrecoCusto(BigDecimal precoCusto) {
         this.precoCusto = precoCusto;
-    }
-
-    public List<Hotfix> getHotfixes() {
-        return hotfixes;
-    }
-
-    public void setHotfixes(List<Hotfix> hotfixes) {
-        this.hotfixes = hotfixes;
-    }
-
-    public void addHotfix(Hotfix hotfix){
-        this.hotfixes.add(hotfix);
-    }
-
-    public void removeHotfix(Hotfix hotfix){
-        this.hotfixes.remove(hotfix);
     }
 }

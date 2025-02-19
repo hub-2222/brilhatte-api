@@ -22,10 +22,11 @@ public class Hotfix extends AbstractEntity{
     private BigDecimal comprimentoUtilizado = new BigDecimal(0);
 
     @JoinColumn(name = "id_calculo", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Calculo calculo;
 
-    public Hotfix(TamanhoHotfixEnum tamanho, BigDecimal larguraUtilizada, BigDecimal comprimentoUtilizado, Calculo calculo) {
+    public Hotfix(Long id, TamanhoHotfixEnum tamanho, BigDecimal larguraUtilizada, BigDecimal comprimentoUtilizado, Calculo calculo) {
+        super(id);
         this.tamanho = tamanho;
         this.larguraUtilizada = larguraUtilizada;
         this.comprimentoUtilizado = comprimentoUtilizado;

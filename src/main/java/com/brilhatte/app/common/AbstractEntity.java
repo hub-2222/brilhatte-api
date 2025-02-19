@@ -7,6 +7,13 @@ import java.util.Objects;
 @MappedSuperclass
 public class AbstractEntity implements BaseEntity {
 
+    public AbstractEntity() {
+    }
+
+    public AbstractEntity(Long id) {
+        this.id = id;
+    }
+
     public static final String SEQUENCE_GENERATOR = "seq";
 
     @Id

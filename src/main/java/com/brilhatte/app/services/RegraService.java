@@ -67,9 +67,9 @@ public class RegraService extends AbstractService<Regra, Long> {
                     return regra;
                 }).toList();
 
-        List<Regra> mergedList = Stream.of(updatedObjects, newObjects).flatMap(List::stream).toList();
+        List<Regra> regrasToSave = Stream.of(updatedObjects, newObjects).flatMap(List::stream).toList();
 
-        regraRepository.saveAll(mergedList);
+        regraRepository.saveAll(regrasToSave);
         regraRepository.deleteAll(removedObjects);
     }
 

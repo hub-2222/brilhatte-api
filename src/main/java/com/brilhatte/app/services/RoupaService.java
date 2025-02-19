@@ -46,4 +46,8 @@ public class RoupaService extends AbstractService<Roupa, Long> {
 
         return page;
     }
+
+    public Roupa findById(Long id) {
+        return roupaRepository.findById(id).orElse(null);
+    }
 }

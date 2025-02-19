@@ -16,6 +16,18 @@ public class CalculoDTO {
     private BigDecimal porcentagemLucro;
     private BigDecimal precoCusto;
 
+    public CalculoDTO(Long id, List<HotfixDTO> listHotfix, RoupaDTO roupa, BigDecimal maoObra, BigDecimal porcentagemLucro, BigDecimal precoCusto) {
+        this.id = id;
+        this.listHotfix = listHotfix;
+        this.roupa = roupa;
+        this.maoObra = maoObra;
+        this.porcentagemLucro = porcentagemLucro;
+        this.precoCusto = precoCusto;
+    }
+
+    public CalculoDTO() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,20 +76,8 @@ public class CalculoDTO {
         this.precoCusto = precoCusto;
     }
 
-    public CalculoDTO(Long id, List<HotfixDTO> listHotfix, RoupaDTO roupa, BigDecimal maoObra, BigDecimal porcentagemLucro, BigDecimal precoCusto) {
-        this.id = id;
-        this.listHotfix = listHotfix;
-        this.roupa = roupa;
-        this.maoObra = maoObra;
-        this.porcentagemLucro = porcentagemLucro;
-        this.precoCusto = precoCusto;
-    }
-
-    public CalculoDTO() {
-    }
-
-    public static CalculoDTO fromEntity(Calculo calculo){
-        return new CalculoDTO(calculo.getId(), calculo.getHotfixes().stream().map(HotfixDTO::fromEntity).collect(Collectors.toList()), RoupaDTO.fromEntity(calculo.getRoupa()), calculo.getMaoObra(), calculo.getPorcentagemLucro(), calculo.getPrecoCusto());
+    public static CalculoDTO fromEntity(Calculo calculo, List<HotfixDTO> hotfixes){
+        return new CalculoDTO(calculo.getId(), hotfixes, RoupaDTO.fromEntity(calculo.getRoupa()), calculo.getMaoObra(), calculo.getPorcentagemLucro(), calculo.getPrecoCusto());
     }
 
     public static Calculo toEntity(CalculoDTO calculoDTO){

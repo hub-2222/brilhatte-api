@@ -39,6 +39,15 @@ public class RoupaController {
         return ResponseEntity.ok(roupasDTO);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RoupaDTO> findById(@PathVariable Long id) {
+        Roupa roupa = roupaService.findById(id);
+        List<Regra> regras = regraService.findAllByRoupaId(id);
+        RoupaDTO roupaDTO = RoupaDTO.fromEntity(roupa);
+        roupaDTO.setPedrasVinculadas(PedraVinculadaDTO.fromRegras(regras));
+        return ResponseEntity.ok(roupaDTO);
+    }
+
     @PostMapping
     public ResponseEntity<RoupaDTO> save(@RequestBody RoupaDTO roupaDTO) {
         Roupa roupa = roupaService.save(RoupaDTO.toEntity(roupaDTO));

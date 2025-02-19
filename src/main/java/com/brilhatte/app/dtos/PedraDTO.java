@@ -62,7 +62,7 @@ public class PedraDTO {
     }
 
     public static Pedra toEntity(PedraDTO pedraDTO) {
-        return new Pedra(pedraDTO.getNome(), pedraDTO.getTamanho(), pedraDTO.getValorUnitario());
+        return new Pedra(pedraDTO.getId(), pedraDTO.getNome(), pedraDTO.getTamanho(), pedraDTO.getValorUnitario());
     }
 
     public static Page<PedraDTO> fromEntity(Page<Pedra> pedras) {
