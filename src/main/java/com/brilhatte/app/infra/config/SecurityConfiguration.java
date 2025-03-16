@@ -2,6 +2,7 @@ package com.brilhatte.app.infra.config;
 
 import com.brilhatte.app.infra.security.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,9 @@ public class SecurityConfiguration {
 
     @Autowired
     private SecurityFilter securityFilter;
+
+    @Value("${java.frontend.url}")
+    private String frontendUrl;
 
 
     @Bean
@@ -57,7 +61,7 @@ public class SecurityConfiguration {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        String origin = Objects.nonNull(System.getenv("FRONTEND_URL")) ? System.getenv("FRONTEND_URL") : "http://localhost:3000";
+        String origin = Objects.nonNull(frontendUrl) ? frontendUrl : "http://localhost:3000";
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(origin)); //allows React to access the API from origin on port 3000. Change accordingly
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
