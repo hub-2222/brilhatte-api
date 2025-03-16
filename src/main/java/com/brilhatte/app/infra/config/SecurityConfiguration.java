@@ -68,7 +68,7 @@ public class SecurityConfiguration {
         logger.error("Frontend URL: {}", frontendUrl);
         String origin = frontendUrl;
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(origin)); //allows React to access the API from origin on port 3000. Change accordingly
+        configuration.setAllowedOrigins(List.of("https://brilhatte-front.onrender.com", "http://localhost:3000","http://brilhatte-front.onrender.com", "brilhatte-front.onrender.com")); //allows React to access the API from origin on port 3000. Change accordingly
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
