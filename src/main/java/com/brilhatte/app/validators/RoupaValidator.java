@@ -34,5 +34,7 @@ public class RoupaValidator {
                 throw new BusinessException("A roupa não pode ter pedras duplicadas");
             }
         }
+
+
     }
 }

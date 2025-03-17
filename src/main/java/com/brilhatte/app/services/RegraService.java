@@ -2,6 +2,8 @@ package com.brilhatte.app.services;
 
 import com.brilhatte.app.common.AbstractService;
 import com.brilhatte.app.dtos.PedraVinculadaDTO;
+import com.brilhatte.app.infra.exception.BusinessException;
+import com.brilhatte.app.models.Pedra;
 import com.brilhatte.app.models.QRegra;
 import com.brilhatte.app.models.Regra;
 import com.brilhatte.app.models.Roupa;
@@ -36,7 +38,13 @@ public class RegraService extends AbstractService<Regra, Long> {
         List<Regra> listRegras = listPedras.stream().map(pedra -> {
             Regra regra = new Regra();
             regra.setRoupa(roupa);
-            regra.setPedra(pedraService.getById(pedra.getId()));
+            Pedra pedraEntity = pedraService.getById(pedra.getId());
+
+            if (Objects.isNull(pedraEntity)) {
+                throw new BusinessException("Pedra não encontrada");
+            }
+
+            regra.setPedra(pedraEntity);
             regra.setQuantidade(pedra.getQuantidade());
             return regra;
         }).toList();
@@ -59,8 +67,11 @@ public class RegraService extends AbstractService<Regra, Long> {
                     return existingRegra;
                 }).toList();
 
-        List<Regra> newObjects = listPedras.stream().filter(pedra -> Objects.isNull(pedra.getIdRegra()) && Objects.nonNull(pedra.getId())).map(
-                pedra -> {
+        List<Regra> newObjects = listPedras.stream()
+                .filter(pedra -> Objects.isNull(pedra.getIdRegra()) &&
+                                     Objects.nonNull(pedra.getId()) &&
+                                    updatedObjects.stream().noneMatch(pedrasAtualizadas -> pedrasAtualizadas.getPedra().getId().equals(pedra.getId())))
+                .map(pedra -> {
                     Regra regra = new Regra();
                     regra.setRoupa(roupa);
                     regra.setPedra(pedraService.getById(pedra.getId()));

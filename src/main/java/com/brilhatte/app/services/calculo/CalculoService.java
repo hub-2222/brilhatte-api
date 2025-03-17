@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 public class CalculoService extends AbstractService<Calculo, Long> {
 
@@ -40,7 +43,9 @@ public class CalculoService extends AbstractService<Calculo, Long> {
 
     public void deleteByRoupaId(Long roupaId) {
         Calculo calculo = findByRoupaId(roupaId);
-        hotfixService.deleteByCalculoId(calculo.getId());
-        calculoRepository.delete(findByRoupaId(roupaId));
+        if (Objects.nonNull(calculo)) {
+            hotfixService.deleteByCalculoId(calculo.getId());
+            calculoRepository.delete(calculo);
+        }
     }
 }
