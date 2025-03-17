@@ -13,6 +13,7 @@ public class Regra extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_pedra", nullable = false, referencedColumnName = "id")
+    @OrderBy(value = "id asc")
     private Pedra pedra;
 
     @ManyToOne

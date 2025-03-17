@@ -9,6 +9,8 @@ import com.brilhatte.app.models.Regra;
 import com.brilhatte.app.models.Roupa;
 import com.brilhatte.app.repositories.RegraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,9 @@ public class RegraService extends AbstractService<Regra, Long> {
     }
 
     public List<Regra> findAllByRoupaId(Long roupaId) {
-        return regraRepository.findAll(QRegra.regra.roupa.id.eq(roupaId));
+        Iterable<Regra> iterableRegras = regraRepository.findAll(QRegra.regra.roupa.id.eq(roupaId),  Sort.by("pedra.id").ascending());
+
+        return (List<Regra>) iterableRegras;
     }
 
     public void create(Roupa roupa, List<PedraVinculadaDTO> listPedras) {

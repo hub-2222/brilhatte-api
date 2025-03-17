@@ -13,11 +13,11 @@ import java.util.Set;
 public class RoupaValidator {
     public void validateFields(RoupaDTO roupa) {
         if (roupa.getNome() == null || roupa.getNome().isEmpty()) {
-            throw new BusinessException("O nome da roupa é obrigatório");
+            throw new BusinessException("O nome da peça é obrigatório");
         }
 
         if (roupa.getPedrasVinculadas().isEmpty()) {
-            throw new BusinessException("A roupa deve ter pelo menos uma pedra vinculada");
+            throw new BusinessException("A peça deve ter pelo menos uma pedra vinculada");
         }
 
         validatePedrasDuplicadas(roupa);
@@ -31,7 +31,7 @@ public class RoupaValidator {
             }
 
             if (!idsUnicos.add(pedra.getId())) {
-                throw new BusinessException("A roupa não pode ter pedras duplicadas");
+                throw new BusinessException("A peça não pode ter pedras duplicadas");
             }
         }
 

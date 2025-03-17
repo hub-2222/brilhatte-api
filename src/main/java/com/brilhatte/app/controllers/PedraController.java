@@ -2,7 +2,10 @@ package com.brilhatte.app.controllers;
 
 import com.brilhatte.app.dtos.PedraDTO;
 import com.brilhatte.app.models.Pedra;
+import com.brilhatte.app.models.QPedra;
 import com.brilhatte.app.services.PedraService;
+import org.hibernate.query.Order;
+import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +27,7 @@ public class PedraController {
     public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "") String nome) {
-        Page<Pedra> pedras = service.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.asc("nome"))), nome);
+        Page<Pedra> pedras = service.findAll(PageRequest.of(page, size, Sort.by("id").descending()), nome);
         Page<PedraDTO> pedrasDTO = PedraDTO.fromEntity(pedras);
         return ResponseEntity.ok(pedrasDTO);
     }

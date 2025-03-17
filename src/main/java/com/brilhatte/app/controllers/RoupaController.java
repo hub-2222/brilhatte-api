@@ -11,6 +11,7 @@ import com.brilhatte.app.validators.RoupaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,7 @@ public class RoupaController {
     public ResponseEntity<Page<RoupaDTO>> findAll(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "") String nome) {
-        Page<Roupa> roupas = roupaService.findAllByNomeWithImage(PageRequest.of(page, size), nome);
+        Page<Roupa> roupas = roupaService.findAllByNomeWithImage(PageRequest.of(page, size,  Sort.by("nome").ascending()), nome);
         Page<RoupaDTO> roupasDTO = RoupaDTO.fromEntity(roupas);
         roupasDTO.forEach(dto -> {
             List<Regra> regras = regraService.findAllByRoupaId(dto.getId());
