@@ -6,6 +6,7 @@ import com.brilhatte.app.models.Regra;
 import com.brilhatte.app.models.Roupa;
 import com.brilhatte.app.services.RegraService;
 import com.brilhatte.app.services.RoupaService;
+import com.brilhatte.app.validators.RoupaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ public class RoupaController {
 
     @Autowired
     private RegraService regraService;
+
+    @Autowired
+    private RoupaValidator roupaValidator;
 
     @GetMapping
     public ResponseEntity<Page<RoupaDTO>> findAll(@RequestParam(defaultValue = "0") int page,
@@ -50,6 +54,8 @@ public class RoupaController {
 
     @PostMapping
     public ResponseEntity<RoupaDTO> save(@RequestBody RoupaDTO roupaDTO) {
+        roupaValidator.validateFields(roupaDTO);
+
         Roupa roupa = roupaService.save(RoupaDTO.toEntity(roupaDTO));
         regraService.create(roupa, roupaDTO.getPedrasVinculadas());
         return ResponseEntity.ok(RoupaDTO.fromEntity(roupa));
@@ -57,6 +63,8 @@ public class RoupaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<RoupaDTO> update(@PathVariable Long id, @RequestBody RoupaDTO roupaDTO) {
+        roupaValidator.validateFields(roupaDTO);
+
         Roupa roupa = roupaService.update(id, RoupaDTO.toEntity(roupaDTO));
         regraService.update(roupa, roupaDTO.getPedrasVinculadas());
         return ResponseEntity.ok(RoupaDTO.fromEntity(roupa));

@@ -2,6 +2,7 @@ package com.brilhatte.app.controllers;
 
 import com.brilhatte.app.dtos.calculo.CalculoDTO;
 import com.brilhatte.app.dtos.calculo.HotfixDTO;
+import com.brilhatte.app.enums.TamanhoHotfixEnum;
 import com.brilhatte.app.models.Regra;
 import com.brilhatte.app.models.calculo.Calculo;
 import com.brilhatte.app.models.calculo.Hotfix;
@@ -11,11 +12,13 @@ import com.brilhatte.app.services.calculo.CalculoService;
 import com.brilhatte.app.services.calculo.HotfixService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -24,7 +27,9 @@ public class CalculoController {
 
     private static final BigDecimal PORCENTAGEM_GRADUACAO = new BigDecimal("1.05");
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
-    private static final Integer MARGEM_ERRO_LARGURA = 4;
+    private static final BigDecimal MARGEM_ERRO_LARGURA = new BigDecimal(4);
+
+
 
     @Autowired
     private CalculoService calculoService;
@@ -76,12 +81,14 @@ public class CalculoController {
     }
 
     private static BigDecimal calcularValorHotfix(HotfixDTO hotfix) {
-        BigDecimal valorMetro = hotfix.getTamanho().getPrecoMetro();
-        Integer larguraHotfix = hotfix.getTamanho().getLargura() + MARGEM_ERRO_LARGURA;
+        BigDecimal valorMetro = hotfix.getTamanho().calcularValorMetro(hotfix.getComprimentoUtilizado());
+        Integer larguraHotfix = hotfix.getTamanho().getLargura();
         BigDecimal comprimentoMetro = hotfix.getComprimentoUtilizado().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-        BigDecimal proporcaoLargura = hotfix.getLarguraUtilizada().divide(new BigDecimal(larguraHotfix), 2, RoundingMode.HALF_UP);
+        BigDecimal larguraComMargem = hotfix.getLarguraUtilizada().add(MARGEM_ERRO_LARGURA);
+        BigDecimal proporcaoLargura = larguraComMargem.divide(new BigDecimal(larguraHotfix), 2, RoundingMode.HALF_UP);
         BigDecimal valorRealMetro = valorMetro.multiply(proporcaoLargura);
 
         return valorRealMetro.multiply(comprimentoMetro);
     }
+
 }
