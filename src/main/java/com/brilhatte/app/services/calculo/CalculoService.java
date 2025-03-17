@@ -17,6 +17,9 @@ public class CalculoService extends AbstractService<Calculo, Long> {
     @Autowired
     private CalculoRepository calculoRepository;
 
+    @Autowired
+    private HotfixService hotfixService;
+
     @Override
     protected JpaRepository<Calculo, Long> getRepository() {
         return calculoRepository;
@@ -36,6 +39,8 @@ public class CalculoService extends AbstractService<Calculo, Long> {
     }
 
     public void deleteByRoupaId(Long roupaId) {
+        Calculo calculo = findByRoupaId(roupaId);
+        hotfixService.deleteByCalculoId(calculo.getId());
         calculoRepository.delete(findByRoupaId(roupaId));
     }
 }

@@ -59,4 +59,8 @@ public class HotfixService extends AbstractService<Hotfix, Long> {
         hotfixRepository.deleteAll(removedObjects);
         hotfixRepository.saveAll(hotfixesToSave);
     }
+
+    public void deleteByCalculoId(Long calculoId) {
+        hotfixRepository.deleteAll(findAllByCalculoId(calculoId));
+    }
 }
