@@ -6,6 +6,7 @@ import com.brilhatte.app.models.Regra;
 import com.brilhatte.app.models.Roupa;
 import com.brilhatte.app.services.RegraService;
 import com.brilhatte.app.services.RoupaService;
+import com.brilhatte.app.services.calculo.CalculoService;
 import com.brilhatte.app.validators.RoupaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,9 @@ public class RoupaController {
 
     @Autowired
     private RoupaValidator roupaValidator;
+
+    @Autowired
+    private CalculoService calculoService;
 
     @GetMapping
     public ResponseEntity<Page<RoupaDTO>> findAll(@RequestParam(defaultValue = "0") int page,
@@ -70,10 +74,11 @@ public class RoupaController {
         return ResponseEntity.ok(RoupaDTO.fromEntity(roupa));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        regraService.deleteByRoupaId(id);
-        roupaService.delete(id);
+    @DeleteMapping("/{idRoupa}")
+    public ResponseEntity<Void> delete(@PathVariable Long idRoupa) {
+        calculoService.deleteByRoupaId(idRoupa);
+        regraService.deleteByRoupaId(idRoupa);
+        roupaService.delete(idRoupa);
         return ResponseEntity.noContent().build();
     }
 }

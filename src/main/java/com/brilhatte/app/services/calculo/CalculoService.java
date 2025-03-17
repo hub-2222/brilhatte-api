@@ -34,4 +34,8 @@ public class CalculoService extends AbstractService<Calculo, Long> {
         }
         return super.save(entity);
     }
+
+    public void deleteByRoupaId(Long roupaId) {
+        calculoRepository.delete(findByRoupaId(roupaId));
+    }
 }
