@@ -1,40 +1,45 @@
 package com.brilhatte.app.enums;
 
+import io.netty.util.internal.MathUtil;
+
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public enum TamanhoHotfixEnum {
     VINTE_QUATRO(Map.of(
-            BigDecimal.valueOf(0.25), BigDecimal.valueOf(0.3),
+            BigDecimal.valueOf(0), BigDecimal.valueOf(0),
+            BigDecimal.valueOf(0.01), BigDecimal.valueOf(0.3),
             BigDecimal.valueOf(0.5), BigDecimal.valueOf(0.55),
             BigDecimal.valueOf(0.75), BigDecimal.valueOf(0.8),
-            BigDecimal.valueOf(1.0), BigDecimal.valueOf(1.05)
-    ), 24),
+            BigDecimal.valueOf(1), BigDecimal.valueOf(1.05)
+    ), new BigDecimal(24)),
 
     TRINTA_DOIS(Map.of(
-            BigDecimal.valueOf(0.25), BigDecimal.valueOf(0.35),
-            BigDecimal.valueOf(0.5), BigDecimal.valueOf(0.7),
+            BigDecimal.valueOf(0), BigDecimal.valueOf(0),
+            BigDecimal.valueOf(0.01), BigDecimal.valueOf(0.35),
+            BigDecimal.valueOf(0.50), BigDecimal.valueOf(0.7),
             BigDecimal.valueOf(0.75), BigDecimal.valueOf(1.05),
-            BigDecimal.valueOf(1.0), BigDecimal.valueOf(1.35)
-    ), 32);
+            BigDecimal.valueOf(1), BigDecimal.valueOf(1.35)
+    ), new BigDecimal(32));
 
     private final NavigableMap<BigDecimal, BigDecimal> valoresPorComprimento;
-    private Integer largura;
+    private BigDecimal largura;
 
-    TamanhoHotfixEnum(Map<BigDecimal, BigDecimal> valoresPorComprimento, Integer largura) {
+    TamanhoHotfixEnum(Map<BigDecimal, BigDecimal> valoresPorComprimento, BigDecimal largura) {
         this.valoresPorComprimento = new TreeMap<>(valoresPorComprimento);
         this.largura = largura;
     }
 
     public BigDecimal calcularValorMetro(BigDecimal comprimento) {
-        Map.Entry<BigDecimal, BigDecimal> entry = valoresPorComprimento.ceilingEntry(comprimento);
-        return (entry != null) ? entry.getValue() : BigDecimal.ZERO;
-    }
+        if (comprimento.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
 
-    public Integer getLargura() {
+        Map.Entry<BigDecimal, BigDecimal> entry = valoresPorComprimento.floorEntry(comprimento);
+
+        return entry.getValue();
+    }
+    public BigDecimal getLargura() {
         return largura;
     }
 }

@@ -60,7 +60,7 @@ public class CalculoController {
         List<Regra> regras = regraService.findAllByRoupaId(calculoDTO.getRoupa().getId());
         BigDecimal valorTotalPedras = calcularValorPedras(regras);
         BigDecimal porcentagemLucro = calculoDTO.getPorcentagemLucro().divide(ONE_HUNDRED, 2, RoundingMode.HALF_UP).add(BigDecimal.ONE);
-        BigDecimal precoCusto = (valorTotalHotfix.add(calculoDTO.getMaoObra()).add(valorTotalPedras)).multiply(porcentagemLucro);
+        BigDecimal precoCusto = (valorTotalHotfix.add(calculoDTO.getMaoObra()).add(valorTotalPedras)).multiply(porcentagemLucro).setScale(5, RoundingMode.HALF_UP);
 
 
         calculoDTO.setPrecoCusto(precoCusto);
@@ -81,11 +81,15 @@ public class CalculoController {
     }
 
     private static BigDecimal calcularValorHotfix(HotfixDTO hotfix) {
-        BigDecimal valorMetro = hotfix.getTamanho().calcularValorMetro(hotfix.getComprimentoUtilizado());
-        Integer larguraHotfix = hotfix.getTamanho().getLargura();
         BigDecimal comprimentoMetro = hotfix.getComprimentoUtilizado().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-        BigDecimal larguraComMargem = hotfix.getLarguraUtilizada().add(MARGEM_ERRO_LARGURA);
-        BigDecimal proporcaoLargura = larguraComMargem.divide(new BigDecimal(larguraHotfix), 2, RoundingMode.HALF_UP);
+        BigDecimal valorMetro = hotfix.getTamanho().calcularValorMetro(comprimentoMetro);
+        BigDecimal larguraHotfix = hotfix.getTamanho().getLargura();
+        BigDecimal larguraCalculo = hotfix.getLarguraUtilizada().add(MARGEM_ERRO_LARGURA);
+        if (larguraCalculo.compareTo(larguraHotfix) > 0) {
+            larguraCalculo = larguraHotfix;
+        }
+
+        BigDecimal proporcaoLargura = larguraCalculo.divide(larguraHotfix, 2, RoundingMode.HALF_UP);
         BigDecimal valorRealMetro = valorMetro.multiply(proporcaoLargura);
 
         return valorRealMetro.multiply(comprimentoMetro);

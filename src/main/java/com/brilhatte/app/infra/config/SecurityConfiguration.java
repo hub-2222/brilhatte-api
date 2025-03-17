@@ -63,8 +63,6 @@ public class SecurityConfiguration {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
-        logger.error("Frontend URL: {}", frontendUrl);
         String origin = frontendUrl;
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(origin)); //allows React to access the API from origin on port 3000. Change accordingly

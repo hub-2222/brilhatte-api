@@ -16,11 +16,12 @@ import java.util.stream.Stream;
 
 @Service
 public class RegraService extends AbstractService<Regra, Long> {
+
     @Autowired
     private RegraRepository regraRepository;
 
     @Autowired
-    private  PedraService pedraService;
+    private PedraService pedraService;
 
     @Override
     protected JpaRepository<Regra, Long> getRepository() {
