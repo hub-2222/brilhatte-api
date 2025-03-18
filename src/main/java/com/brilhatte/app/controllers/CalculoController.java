@@ -60,7 +60,7 @@ public class CalculoController {
         List<Regra> regras = regraService.findAllByRoupaId(calculoDTO.getRoupa().getId());
         BigDecimal valorTotalPedras = calcularValorPedras(regras);
         BigDecimal porcentagemLucro = calculoDTO.getPorcentagemLucro().divide(ONE_HUNDRED, 2, RoundingMode.HALF_UP).add(BigDecimal.ONE);
-        BigDecimal precoCusto = (valorTotalHotfix.add(calculoDTO.getMaoObra()).add(valorTotalPedras)).multiply(porcentagemLucro).setScale(5, RoundingMode.HALF_UP);
+        BigDecimal precoCusto = (valorTotalHotfix.add(calculoDTO.getMaoObra()).add(valorTotalPedras)).multiply(porcentagemLucro).setScale(2, RoundingMode.HALF_UP);
 
 
         calculoDTO.setPrecoCusto(precoCusto);
