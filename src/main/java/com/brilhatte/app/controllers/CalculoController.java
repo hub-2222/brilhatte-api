@@ -82,7 +82,7 @@ public class CalculoController {
 
     private static BigDecimal calcularValorHotfix(HotfixDTO hotfix) {
         BigDecimal comprimentoMetro = hotfix.getComprimentoUtilizado().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-        BigDecimal valorMetro = hotfix.getTamanho().calcularValorMetro(comprimentoMetro);
+        BigDecimal valorMetro = hotfix.getTamanho().getValorMetro();
         BigDecimal larguraHotfix = hotfix.getTamanho().getLargura();
         BigDecimal larguraCalculo = hotfix.getLarguraUtilizada().add(MARGEM_ERRO_LARGURA);
         if (larguraCalculo.compareTo(larguraHotfix) > 0) {
